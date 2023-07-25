@@ -124,7 +124,7 @@
                 <div class="section-field mb-20">
                   <label class="mb-10" for="name">User name
                   </label>
-                  <input class="web form-control" type="text" placeholder="User name" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}">
+                  <input class="web form-control" type="text" placeholder="User name" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" required="required">
                   {% for error in form.username.errors %}
                     <p style="color: red;">이미 존재하는 아이디입니다.</p>
                   {% endfor %}
@@ -132,12 +132,12 @@
                 <div class="section-field mb-20">
                   <label class="mb-10" for="Password">Password
                   </label>
-                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}">
+                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" required="required">
                 </div>
                 <div class="section-field mb-20">
                   <label class="mb-10" for="Password">Password Check
                   </label>
-                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}">
+                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" required="required">
                   {% for error in form.password2.errors %}
                     <p style="color: red;">{{ error }}</p>
                   {% endfor %}

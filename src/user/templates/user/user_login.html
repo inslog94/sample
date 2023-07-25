@@ -124,12 +124,12 @@
                 <div class="section-field mb-20">
                   <label class="mb-10" for="name">User name*
                   </label>
-                  <input class="web form-control" type="text" placeholder="User name" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}">
+                  <input class="web form-control" type="text" placeholder="User name" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" required="required">
                 </div>
                 <div class="section-field mb-20">
                   <label class="mb-10" for="Password">Password*
                   </label>
-                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}">
+                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" required="required">
                   {% for error in form.non_field_errors %}
                     <p style="color: red;">올바른 username와 비밀번호를 입력하십시오.</p>
                   {% endfor %}
@@ -139,7 +139,7 @@
                     <input type="checkbox" class="form-control" name="two" id="two"/>
                     <label class="mb-2" for="two">
                       Remember me</label>
-                    <a href="password-recovery.html" class="float-end">Forgot Password?</a>
+                    <a href="#" class="float-end">Forgot Password?</a>
                   </div>
                 </div>
                 <button type="submit" class="button">
