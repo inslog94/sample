@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load base64_to_img %}
+
+{% block title %}Blog - Detail{% endblock %}
+{% block extra_css %}
+  <style>
+    .post-img {
+      max-width: 100%;
+    }
+
+    .post-img img {
+      max-width: 100%;
+    }
+
+    .post-edit-delete {
+      width: 100px;
+    }
+
+    .addCommentBtn {
+      height: 100%;
+      width: 75px;
+    }
+
+    .deleteCommentBtn {
+      height: 90%;
+    }
+  </style>
+{% endblock %}
+
+<!--================================= page-title-->
+
+{% block sub-title %}Blog Detail{% endblock %}
+{% block root_b %}Blog{% endblock %}
+{% block root_c %}Detail{% endblock %}
+
+<!--================================= page-title -->
+
+{% block content %}
+
+  <!--================================= single-portfolio-post-->
+
+  <section class="single-portfolio-post white-bg page-section-ptb">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 port-information">
+          <div class="port-title sm-mt-40">
+            <h3 class="mb-30">{{ post.title }}</h3>
+            {% if post.writer == request.user %}
+              <form action="{% url 'blog:delete' pk=post.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="button button-border border-danger float-end bg-danger post-edit-delete ml-10" value="delete">
+              </form>
+              <a href="{% url 'blog:edit' pk=post.pk %}" class="button button-border border-info float-end bg-info post-edit-delete">
+                edit
+              </a>
+            {% endif %}
+          </div>
+          <div class="port-meta clearfix">
+            <ul class="list-unstyled">
+              <li>
+                <b>Writer:</b>
+                <span>{{ post.writer }}</span></li>
+              <li>
+                <b>Date:
+                </b>
+                <span>{{ post.created_at }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--=================================-->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="port-info mt-50 mb-50">
+            <p>{{ post.content|base64_to_image }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mb-30">
+        <div class="tags">
+          <h5>Tags:</h5>
+          <ul>
+            {% if tags %}
+              {% for tag in tags %}
+                <li>
+                  <a href="" class='tagSearch'>
+                    {{ tag }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+        <div class="share">
+          <div class="social">
+            <strong>Share :</strong>
+            <ul>
+              <li>
+                <a href="#">
+                  <i class="fa fa-facebook"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-twitter"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-pinterest-p"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-dribbble"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--=================================-->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="port-navigation clearfix">
+            <form action="{% url 'blog:cm-write' pk=post.pk %}" method="post">
+              {% csrf_token %}
+              <h6 class="mt-30 mb-20">Comment Write
+              </h6>
+              <div class="d-flex">
+                {{ comment_form.content }}
+                <input type="submit" class="button addCommentBtn col-1" value="등록"></input>
+              </div>
+            </form>
+          </div>
+          {% for comment in comments %}
+            <div class="d-flex align-items-center justify-content-between mt-3">
+              <span>{{ comment.content }}
+                -
+                {{ comment.writer }}
+                -
+                {{ comment.created_at }}</span>
+              {% if comment.writer == request.user %}
+                <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" class="deleteCommentBtn" value="x">
+                </form>
+              {% endif %}
+            </div>
+
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    $tags = document.querySelectorAll('.tagSearch');
+    $tags.forEach((tag) => {
+      tag.addEventListener('click', (event) => tagSearch(event, tag));
+    });
+
+    function tagSearch(event, tag) {
+      event.preventDefault()
+      const url = "{% url 'blog:tag-search' %}?name=" + tag
+        .textContent
+        .trim()
+      window.location.href = url;
+    }
+  </script>
+{% endblock %}

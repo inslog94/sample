@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog - Signup{% endblock %}
+{% block extra_css %}
+  <!-- Skin Color -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/skins/skin-cyan.css' %}">
+  <style>
+    .blog-link:hover {
+      color: black;
+    }
+  </style>
+{% endblock %}
+{% block menu %}
+  <div class="menu">
+    <!-- menu start -->
+    <nav id="menu" class="mega-menu mobileTopFixed desktopTopFixed gray-bg" style="">
+      <!-- menu list items container -->
+      <section class="menu-list-items" style="height: 40px;">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 position-relative">
+              <!-- menu logo -->
+              <ul class="menu-logo">
+                <li>
+                  <h1>
+                    <a href="/blog/" class="text-white">
+                      BLOG
+                      <img src="" alt="">
+                    </a>
+                  </h1>
+                  <div class="menu-mobile-collapse-trigger">
+                    <span></span></div>
+                </li>
+              </ul>
+              <!-- menu links -->
+              <div class="menu-bar">
+                <ul class="menu-links" style="max-height: 400px; display: none;">
+                  <li>
+                    <a href="/blog/">Home</a>
+                  </li>
+
+                  <li>
+                    <a href="/user/login/">Login</a>
+                  </li>
+                  <li>
+                    <a href="/user/signup/">Signup</a>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </nav>
+  </div>
+{% endblock %}
+
+<!--================================= signup-->
+{% block content %}
+  <section class="login-box-main gray-bg height-100vh page-section-ptb py-0" style="height: 90vh;">
+    <div class="login-box-main-middle">
+      <div class="container">
+        <div class="row justify-content-center no-gutter position-relative">
+          <div class="col-lg-2 col-md-4">
+            <div class="login-box-left  white-bg">
+              <img class="logo-small" src="" alt="">
+              <ul class="nav">
+                <li>
+                  <a href="{% url 'user:login' %}">
+                    <i class="ti-user"></i>
+                    Login</a>
+                </li>
+                <li class="active">
+                  <a href="#">
+                    <i class="ti-pencil-alt"></i>
+                    Signup</a>
+                </li>
+              </ul>
+              <div class="social-icons color-hover clearfix pos-bot pb-30 pl-30">
+                <ul>
+                  <li class="social-facebook">
+                    <a href="#">
+                      <i class="fa fa-facebook"></i>
+                    </a>
+                  </li>
+                  <li class="social-twitter">
+                    <a href="#">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li class="social-instagram">
+                    <a href="#">
+                      <i class="fa fa-instagram"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 theme-bg">
+            <div class="login-box pos-r text-white login-box-theme">
+              <h2 class="text-white mb-20">Welcome to
+                <a href="{% url 'blog:list' %}" class="blog-link">Blog</a>
+              </h2>
+              <ul class="list-unstyled pos-bot pb-40">
+                <li class="list-inline-item">
+                  <a class="text-white" href="#">
+                    Terms of Use</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-white" href="#">
+                    Privacy Policy</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="login-box pb-50 clearfix white-bg">
+              <h3 class="mb-30">Signup</h3>
+              <form action="{% url 'user:signup' %}" method="post">
+                {% csrf_token %}
+                <div class="section-field mb-20">
+                  <label class="mb-10" for="name">User name
+                  </label>
+                  <input class="web form-control" type="text" placeholder="User name" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}">
+                  {% for error in form.username.errors %}
+                    <p style="color: red;">이미 존재하는 아이디입니다.</p>
+                  {% endfor %}
+                </div>
+                <div class="section-field mb-20">
+                  <label class="mb-10" for="Password">Password
+                  </label>
+                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}">
+                </div>
+                <div class="section-field mb-20">
+                  <label class="mb-10" for="Password">Password Check
+                  </label>
+                  <input class="Password form-control" type="password" placeholder="Password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}">
+                  {% for error in form.password2.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                  {% endfor %}
+                </div>
+                <button type="submit" class="button">
+                  <span>signup</span>
+                  <i class="fa fa-check"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--================================= signup-->
+{% endblock %}

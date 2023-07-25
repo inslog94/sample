@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load base64_to_img %}
+{% load find_img %}
+
+{% block title %}Blog - List{% endblock %}
+{% block extra_css %}
+  <style>
+    .write {
+      width: 100%;
+    }
+  </style>
+{% endblock %}
+
+<!--================================= page-title-->
+
+{% block sub-title %}Blog Timeline{% endblock %}
+{% block root_b %}Blog{% endblock %}
+{% block root_c %}List{% endblock %}
+
+<!--================================= page-title -->
+
+{% block content %}
+
+  <!--================================= blog timeline sidebar-->
+
+  <section class="white-bg blog timeline-sidebar page-section-ptb">
+    <div class="container mb-50">
+      <div class="row">
+        <div class="col-lg-9">
+          {% if posts %}
+            <ul class="timeline">
+              <li class="entry-date">
+                <span>
+                  {{ posts.last.created_at|date:"F Y" }}
+                </span>
+              </li>
+              <!--================================= post with images -->
+              {% for post in posts %}
+                {% if not post.is_deleted %}
+                  {% if "(data:image" in post.content %}
+                    <li class="timeline-inverted">
+                      <div class="timeline-badge primary">
+                        <a href="#">{{ post.created_at|date:"d" }}
+                          <span>{{ post.created_at|date:"M" }}</span></a>
+                      </div>
+                      <div class="timeline-panel">
+                        <div class="blog-entry">
+                          <div class="entry-image clearfix">
+                            {{ post.content|get_first_image_tag }}
+                          </div>
+                          <div class="blog-detail">
+                            <div class="entry-title mb-10">
+                              <a href="{% url 'blog:detail' pk=post.pk %}">{{ post.title }}</a>
+                            </div>
+                            <div class="entry-meta mb-10">
+                              <ul>
+                                <li>
+                                  <i class="fa fa-hashtag"></i>
+                                  {% if post.tags.all %}
+                                    {% for tag in post.tags.all %}
+                                      <li>
+                                        <a href="" class='tagSearch'>
+                                          {{ tag }}
+                                        </a>
+                                      </li>
+                                    {% endfor %}
+                                  {% else %}
+                                    <li>None</li>
+                                  {% endif %}
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <i class="fa fa-user-o"></i>
+                                    {{ post.writer }}</a>
+                                </li>
+                                <li>
+                                  <i class="fa fa-calendar-o"></i>
+                                  {{ post.created_at|date:"M d Y" }}</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="entry-content">
+                            <p>{{ post.content|base64_to_image|striptags }}</p>
+                          </div>
+                          <div class="entry-share clearfix">
+                            <div class="entry-button">
+                              <a class="button arrow" href="{% url 'blog:detail' pk=post.pk %}">Read More<i class="fa fa-angle-right" aria-hidden="true"></i>
+                              </a>
+                            </div>
+                            <div class="social list-style-none float-end">
+                              <strong>Share :
+                              </strong>
+                              <ul>
+                                <li>
+                                  <a href="#">
+                                    <i class="fa fa-facebook"></i>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <i class="fa fa-twitter"></i>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <i class="fa fa-pinterest-p"></i>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <i class="fa fa-dribbble"></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <!--================================= post without images -->
+                {% else %}
+                  <li class="timeline-inverted">
+                    <div class="timeline-badge primary">
+                      <a href="#">{{ post.created_at|date:"d" }}
+                        <span>{{ post.created_at|date:"M" }}</span></a>
+                    </div>
+                    <div class="timeline-panel">
+                      <div class="blog-entry">
+                        <div class="blog-detail">
+                          <div class="entry-title mb-10">
+                            <a href="{% url 'blog:detail' pk=post.pk %}">{{ post.title }}</a>
+                          </div>
+                          <div class="entry-meta mb-10">
+                            <ul>
+                              <li>
+                                <i class="fa fa-hashtag"></i>
+                                {% if post.tags.all %}
+                                  {% for tag in post.tags.all %}
+                                    <li>
+                                      <a href="" class='tagSearch'>
+                                        {{ tag }}
+                                      </a>
+                                    </li>
+                                  {% endfor %}
+                                {% else %}
+                                  <li>None</li>
+                                {% endif %}
+                              </li>
+                              <li>
+                                <a href="#">
+                                  <i class="fa fa-user-o"></i>
+                                  {{ post.writer }}</a>
+                              </li>
+                              <li>
+                                <i class="fa fa-calendar-o"></i>
+                                {{ post.created_at|date:"M d Y" }}</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="entry-content">
+                          <p>{{ post.content|striptags }}</p>
+                        </div>
+                        <div class="entry-share clearfix">
+                          <div class="entry-button">
+                            <a class="button arrow" href="{% url 'blog:detail' pk=post.pk %}">Read More<i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                          </div>
+                          <div class="social list-style-none float-end">
+                            <strong>Share :
+                            </strong>
+                            <ul>
+                              <li>
+                                <a href="#">
+                                  <i class="fa fa-facebook"></i>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#">
+                                  <i class="fa fa-twitter"></i>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#">
+                                  <i class="fa fa-pinterest-p"></i>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#">
+                                  <i class="fa fa-dribbble"></i>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          <!-- =========================================== -->
+          <li class="entry-date-bottom">
+            <a href="#">Load more...</a>
+          </li>
+          <!-- =========================================== -->
+          <li class="clearfix timeline-inverted" style="float: none;"></li>
+        </ul>
+      {% endif %}
+    </div>
+    <!-- ================================= -->
+    <div class="col-lg-3 sm-mt-50">
+      <div class="sidebar-widget">
+        <h6 class="mt-40 mb-20">Post Write
+        </h6>
+        <a class="mb-20 py-3 button write" href="{% url 'blog:write' %}">Write</a>
+      </div>
+      <div class="sidebar-widget">
+        <h6 class="mt-40 mb-20">Recent Comments
+        </h6>
+        {% if comments %}
+          {% for comment in comments %}
+            <div class="recent-post clearfix">
+              <div class="recent-post-info">
+                <a href="{% url 'blog:detail' pk=comment.post.id %}">{{ comment.content }}
+                  -
+                  {{ comment.writer }}</a>
+                <span>
+                  <i class="fa fa-calendar-o"></i>
+                  {{ comment.created_at|date:"F d Y" }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="sidebar-widget">
+        <h6 class="mt-40 mb-20">Tags</h6>
+        <div class="widget-tags">
+          <ul>
+            {% if tags %}
+              {% for tag in tags %}
+                <li>
+                  <a href="" class='tagSearch'>
+                    {{ tag }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar-widget">
+        <h6 class="mt-40 mb-20">Youtube video</h6>
+        <div class="js-video [youtube, widescreen]">
+          <iframe src="https://www.youtube.com/embed/kKsivrgoyDw?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <h6 class="mt-40 mb-20">Quick contact</h6>
+        <form class="gray-form">
+          <div class="mb-3">
+            <input type="email" class="form-control" placeholder="Name">
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control" id="exampleInputphone" placeholder="Email">
+          </div>
+
+          <div class="mb-3">
+            <textarea class="form-control" rows="4" placeholder="message"></textarea>
+          </div>
+          <a class="button" href="#">Submit</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!--================================= blog timeline sidebar-->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$tags = document.querySelectorAll('.tagSearch');
+$tags.forEach((tag) => {
+  tag.addEventListener('click', (event) => tagSearch(event, tag));
+});
+
+function tagSearch(event, tag) {
+  event.preventDefault()
+  const url = "{% url 'blog:tag-search' %}?name=" + tag
+    .textContent
+    .trim()
+  window.location.href = url;
+}
+</script>
+{% endblock %}
